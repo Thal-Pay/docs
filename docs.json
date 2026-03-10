@@ -141,7 +141,13 @@
   },
   "description": "Documentação de API - Gateway de Pagamento Thal Pay",
   "fonts": {
-    "family": "Montserrat"
+    "family": "Poppins",
+    "heading": {
+      "family": "Poppins"
+    },
+    "body": {
+      "family": "Poppins"
+    }
   },
   "background": {
     "color": {
