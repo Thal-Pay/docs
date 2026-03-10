@@ -1,0 +1,109 @@
+---
+title: "Autenticacao"
+description: "Como autenticar suas requisicoes na API Thalpay"
+---
+
+## Metodos de autenticacao
+
+A API Thalpay suporta dois metodos de autenticacao. Voce pode usar qualquer um em todos os endpoints autenticados.
+
+### API Key (recomendado para integracao)
+
+Gere uma API Key no [Dashboard](https://dashboard.thalpay.com) e envie no header `x-api-key`:
+
+```bash
+curl -X GET https://api.thalpay.com/transactions \
+  -H "x-api-key: thalpay_live_abc123def456"
+```
+
+<Warning>
+  A API Key e exibida **apenas uma vez** no momento da criacao. Armazene-a de forma segura (variavel de ambiente ou vault). Se perder, delete a key e crie uma nova.
+</Warning>
+
+### JWT Bearer Token
+
+Para fluxos com login de usuario, use o endpoint de login para obter um token:
+
+```bash
+curl -X POST https://api.thalpay.com/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "usuario@empresa.com",
+    "password": "sua_senha"
+  }'
+```
+
+**Resposta:**
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+  "refreshToken": "550e8400-e29b-41d4-a716-446655440000",
+  "user": {
+    "id": "uuid",
+    "name": "Nome do Usuario",
+    "email": "usuario@empresa.com",
+    "role": "SELLER"
+  }
+}
+```
+
+Use o `accessToken` no header `Authorization`:
+
+```bash
+curl -X GET https://api.thalpay.com/transactions \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..."
+```
+
+## Refresh Token
+
+O `accessToken` expira em **1 hora**. Use o `refreshToken` (valido por 7 dias) para obter um novo token sem refazer login:
+
+```bash
+curl -X POST https://api.thalpay.com/auth/refresh \
+  -H "Content-Type: application/json" \
+  -d '{
+    "refreshToken": "550e8400-e29b-41d4-a716-446655440000"
+  }'
+```
+
+**Resposta:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIs...(novo)",
+  "refreshToken": "660e8400-e29b-41d4-a716-446655440001"
+}
+```
+
+<Note>
+  O refresh token e rotacionado a cada uso — o token anterior e invalidado. Isso previne reutilizacao em caso de vazamento.
+</Note>
+
+## Logout
+
+Para revogar todos os tokens de um usuario:
+
+```bash
+curl -X POST https://api.thalpay.com/auth/logout \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..."
+```
+
+## Boas praticas
+
+<AccordionGroup>
+  <Accordion title="Nunca exponha credenciais no frontend">
+    API Keys e tokens JWT devem ser usados apenas no backend. Nunca inclua credenciais em codigo client-side (JavaScript no browser, apps mobile sem proxy).
+  </Accordion>
+  <Accordion title="Rotacione API Keys periodicamente">
+    Crie uma nova key, atualize sua integracao, e delete a antiga. Isso limita o impacto de um eventual vazamento.
+  </Accordion>
+  <Accordion title="Use variaveis de ambiente">
+    Armazene credenciais em variaveis de ambiente ou servicos de secrets (AWS Secrets Manager, HashiCorp Vault). Nunca commite credenciais no repositorio.
+  </Accordion>
+</AccordionGroup>
+
+## Erros de autenticacao
+
+| Status | Erro | Descricao |
+|--------|------|-----------|
+| `401` | Unauthorized | Token invalido, expirado ou ausente |
+| `403` | Forbidden | Token valido mas sem permissao para o recurso |

@@ -1,0 +1,45 @@
+---
+title: "Buscar por Metadata"
+api: "GET /withdrawals/search"
+description: "Busca saques por chave e valor de metadata"
+---
+
+## Descricao
+
+Busca saques filtrando pelo campo `metadata` (JSONB). Util para encontrar saques associados a um pedido ou referencia externa do seu sistema.
+
+## Request
+
+<ParamField query="metadataKey" type="string" required>
+  Nome da chave no campo metadata. Exemplo: `orderId`
+</ParamField>
+
+<ParamField query="metadataValue" type="string" required>
+  Valor a buscar (substring match). Exemplo: `ORD-001`
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://api.thalpay.com/withdrawals/search?metadataKey=orderId&metadataValue=ORD-001" \
+  -H "x-api-key: sua_api_key"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+[
+  {
+    "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+    "amount": 50000,
+    "method": "PIX",
+    "status": "PAID",
+    "metadata": { "orderId": "ORD-001" },
+    "createdAt": "2026-03-10T12:00:00.000Z"
+  }
+]
+```
+
+</ResponseExample>

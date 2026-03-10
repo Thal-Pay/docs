@@ -1,0 +1,73 @@
+---
+title: "Login"
+api: "POST /login"
+description: "Autentica o usuario e retorna tokens de acesso"
+---
+
+## Descricao
+
+Autentica com email e senha, retornando um `accessToken` (JWT, 1h) e um `refreshToken` (UUID, 7 dias).
+
+<Note>
+  Para integracao server-to-server, prefira usar [API Keys](/api-reference/api-keys/create) em vez de JWT.
+</Note>
+
+## Request
+
+<ParamField body="email" type="string" required>
+  Email do usuario cadastrado.
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  Senha do usuario.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.thalpay.com/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "usuario@empresa.com",
+    "password": "sua_senha"
+  }'
+```
+
+```javascript Node.js
+const response = await fetch("https://api.thalpay.com/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    email: "usuario@empresa.com",
+    password: "sua_senha",
+  }),
+});
+const data = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken": "550e8400-e29b-41d4-a716-446655440000",
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Nome do Usuario",
+    "email": "usuario@empresa.com",
+    "role": "SELLER"
+  }
+}
+```
+
+```json 401
+{
+  "statusCode": 401,
+  "message": "Invalid credentials",
+  "error": "Unauthorized"
+}
+```
+
+</ResponseExample>

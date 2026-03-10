@@ -1,0 +1,48 @@
+---
+title: "Consultar Saque"
+api: "GET /withdrawals/{id}"
+description: "Retorna os detalhes de um saque pelo ID"
+---
+
+## Descricao
+
+Retorna os dados completos de um saque. Voce so tem acesso aos saques do seu proprio seller.
+
+## Request
+
+<ParamField path="id" type="string" required>
+  UUID do saque.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET https://api.thalpay.com/withdrawals/c3d4e5f6-a7b8-9012-cdef-123456789012 \
+  -H "x-api-key: sua_api_key"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true,
+  "data": {
+    "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+    "amount": 50000,
+    "feeAmount": 100,
+    "netAmount": 49900,
+    "method": "PIX",
+    "status": "PAID",
+    "pixKey": "123***78901",
+    "pixKeyType": "CPF",
+    "description": "Saque semanal",
+    "paidAt": "2026-03-10T12:01:00.000Z",
+    "createdAt": "2026-03-10T12:00:00.000Z",
+    "updatedAt": "2026-03-10T12:01:00.000Z"
+  }
+}
+```
+
+</ResponseExample>

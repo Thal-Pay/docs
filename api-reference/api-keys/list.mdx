@@ -1,0 +1,46 @@
+---
+title: "Listar API Keys"
+api: "GET /apiKeys"
+description: "Lista as API Keys do seller"
+---
+
+## Descricao
+
+Retorna as API Keys cadastradas. O secret nao e incluido na resposta.
+
+## Request
+
+<ParamField query="take" type="integer" default="10">
+  Registros por pagina.
+</ParamField>
+
+<ParamField query="skip" type="integer" default="0">
+  Offset de paginacao.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://api.thalpay.com/apiKeys?take=10" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true,
+  "data": [
+    {
+      "id": "e5f6a7b8-c9d0-1234-ef01-23456789abcd",
+      "name": "Producao - Loja Principal",
+      "sellerId": "f6a7b8c9-d0e1-2345-f012-3456789abcde",
+      "createdAt": "2026-03-10T00:00:00.000Z"
+    }
+  ]
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,55 @@
+---
+title: "Consultar Saldo"
+api: "GET /seller-wallet/gestao"
+description: "Retorna o saldo disponivel, bloqueado e total da wallet"
+---
+
+## Descricao
+
+Retorna o saldo atual da wallet do seller. Todos os valores sao em **centavos**.
+
+| Campo | Descricao |
+|-------|-----------|
+| `availableBalance` | Saldo disponivel para saque |
+| `blockedBalance` | Saldo retido (disputas, reservas, periodo de retencao) |
+| `totalBalance` | Soma de disponivel + bloqueado |
+
+<RequestExample>
+
+```bash cURL
+curl -X GET https://api.thalpay.com/seller-wallet/gestao \
+  -H "x-api-key: sua_api_key"
+```
+
+```javascript Node.js
+const response = await fetch("https://api.thalpay.com/seller-wallet/gestao", {
+  headers: { "x-api-key": process.env.THALPAY_API_KEY },
+});
+const { data } = await response.json();
+console.log(`Disponivel: R$ ${(data.availableBalance / 100).toFixed(2)}`);
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true,
+  "data": {
+    "id": "f6a7b8c9-d0e1-2345-f012-3456789abcde",
+    "sellerId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "availableBalance": 1250000,
+    "blockedBalance": 50000,
+    "totalBalance": 1300000,
+    "currency": "BRL",
+    "updatedAt": "2026-03-10T12:00:00.000Z"
+  }
+}
+```
+
+</ResponseExample>
+
+<Tip>
+  Para converter centavos para reais: `valor / 100`. Exemplo: `1250000` centavos = R$ 12.500,00
+</Tip>

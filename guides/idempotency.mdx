@@ -1,0 +1,76 @@
+---
+title: "Idempotencia"
+description: "Evite cobracas duplicadas com chaves de idempotencia"
+---
+
+## O que e idempotencia?
+
+Idempotencia garante que uma mesma requisicao, executada multiplas vezes, produz o mesmo resultado. Isso e fundamental em pagamentos para evitar **cobracas duplicadas** em caso de timeout, retry ou falha de rede.
+
+## Como usar
+
+Inclua o header `Idempotency-Key` com um UUID v4 unico em toda requisicao de criacao:
+
+```bash
+curl -X POST https://api.thalpay.com/transactions \
+  -H "Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000" \
+  -H "x-api-key: sua_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{ "amount": 1500, "method": "PIX", ... }'
+```
+
+## Endpoints que exigem Idempotency-Key
+
+| Endpoint | Obrigatorio |
+|----------|-------------|
+| `POST /transactions` | Sim |
+| `POST /withdrawals` | Sim |
+| Demais endpoints | Nao |
+
+## Comportamento
+
+| Cenario | O que acontece |
+|---------|----------------|
+| Primeira requisicao com a key | Processada normalmente |
+| Mesma key, mesmo body | Retorna o resultado da primeira requisicao (sem reprocessar) |
+| Mesma key, body diferente | Retorna erro `409 Conflict` |
+| Key ausente (onde obrigatorio) | Retorna erro `400 Bad Request` |
+
+## Boas praticas
+
+<Steps>
+  <Step title="Gere a key no seu sistema">
+    Use UUID v4 gerado no seu backend antes de enviar a requisicao. Isso garante que retries usem a mesma key.
+  </Step>
+  <Step title="Associe a key ao pedido">
+    Vincule a Idempotency-Key ao ID do pedido no seu sistema. Se precisar reenviar, use a mesma key.
+  </Step>
+  <Step title="Nunca reutilize keys entre pedidos diferentes">
+    Cada pedido/transacao deve ter sua propria key unica.
+  </Step>
+</Steps>
+
+## Exemplo com retry
+
+```javascript
+const idempotencyKey = crypto.randomUUID(); // gere UMA vez
+
+async function createTransaction(data, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch("https://api.thalpay.com/transactions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.THALPAY_API_KEY,
+          "Idempotency-Key": idempotencyKey, // mesma key em todos os retries
+        },
+        body: JSON.stringify(data),
+      });
+      return await response.json();
+    } catch (err) {
+      if (i === retries - 1) throw err;
+    }
+  }
+}
+```

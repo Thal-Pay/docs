@@ -1,0 +1,103 @@
+---
+title: "Listar Transacoes"
+api: "GET /transactions"
+description: "Lista as transacoes do seller com paginacao e filtros"
+---
+
+## Descricao
+
+Retorna uma lista paginada das suas transacoes. Suporta filtros por status, metodo de pagamento, metadata e busca por ID.
+
+## Request
+
+<ParamField query="take" type="integer" default="10">
+  Numero de registros por pagina.
+</ParamField>
+
+<ParamField query="skip" type="integer" default="0">
+  Numero de registros a pular (offset). Ignorado se `cursor` for usado.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  Cursor para paginacao eficiente. Use o `nextCursor` da resposta anterior.
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filtrar por status. Aceita valor unico ou multiplos separados por virgula.
+  Valores: `PENDING`, `PAID`, `FAILED`, `REFUNDED`, `CHARGEDBACK`, `WAITING_PAYMENT`, `PROCESSING`, `AUTHORIZED`, `REFUSED`, `DISPUTE`
+</ParamField>
+
+<ParamField query="method" type="string">
+  Filtrar por metodo. Valores: `PIX`, `BOLETO`, `CREDIT_CARD`, `CRYPTO`
+</ParamField>
+
+<ParamField query="transactionId" type="string">
+  Buscar por ID exato da transacao.
+</ParamField>
+
+<ParamField query="metadataKey" type="string">
+  Nome da chave no campo metadata para filtrar.
+</ParamField>
+
+<ParamField query="metadataValue" type="string">
+  Valor correspondente a `metadataKey` (busca por substring).
+</ParamField>
+
+<ParamField query="export" type="boolean" default="false">
+  Se `true`, retorna CSV em vez de JSON.
+</ParamField>
+
+<RequestExample>
+
+```bash Paginacao basica
+curl -X GET "https://api.thalpay.com/transactions?take=20&skip=0&status=PAID&method=PIX" \
+  -H "x-api-key: sua_api_key"
+```
+
+```bash Filtro por metadata
+curl -X GET "https://api.thalpay.com/transactions?metadataKey=orderId&metadataValue=ORD-001" \
+  -H "x-api-key: sua_api_key"
+```
+
+```bash Exportar CSV
+curl -X GET "https://api.thalpay.com/transactions?export=true&status=PAID" \
+  -H "x-api-key: sua_api_key" \
+  -o transacoes.csv
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true,
+  "data": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "amount": 5000,
+      "netAmount": 4500,
+      "feeAmount": 500,
+      "method": "PIX",
+      "status": "PAID",
+      "paidAt": "2026-03-10T00:05:00.000Z",
+      "createdAt": "2026-03-10T00:00:00.000Z"
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "amount": 15000,
+      "netAmount": 14250,
+      "feeAmount": 750,
+      "method": "CREDIT_CARD",
+      "status": "PAID",
+      "installments": 3,
+      "paidAt": "2026-03-10T00:10:00.000Z",
+      "createdAt": "2026-03-10T00:09:00.000Z"
+    }
+  ],
+  "count": 150,
+  "nextCursor": "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+}
+```
+
+</ResponseExample>

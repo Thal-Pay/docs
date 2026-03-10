@@ -1,0 +1,47 @@
+---
+title: "Listar Webhooks"
+api: "GET /webhooks"
+description: "Lista os webhooks registrados"
+---
+
+## Descricao
+
+Retorna todos os webhooks configurados para o seu seller.
+
+## Request
+
+<ParamField query="take" type="integer" default="10">
+  Registros por pagina.
+</ParamField>
+
+<ParamField query="skip" type="integer" default="0">
+  Offset de paginacao.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://api.thalpay.com/webhooks?take=10" \
+  -H "x-api-key: sua_api_key"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true,
+  "data": [
+    {
+      "id": "d4e5f6a7-b8c9-0123-def0-123456789abc",
+      "url": "https://seusite.com/webhooks/thalpay",
+      "eventType": "ALL",
+      "description": "Producao - Sistema principal",
+      "createdAt": "2026-03-10T00:00:00.000Z"
+    }
+  ]
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,55 @@
+---
+title: "Registrar Webhook"
+api: "POST /webhooks"
+description: "Registra uma URL para receber notificacoes de eventos"
+---
+
+## Descricao
+
+Registra um endpoint HTTPS para receber notificacoes automaticas quando transacoes, saques ou disputas mudam de status.
+
+## Request
+
+<ParamField body="url" type="string" required>
+  URL do seu endpoint (deve ser HTTPS). Exemplo: `https://seusite.com/webhooks/thalpay`
+</ParamField>
+
+<ParamField body="eventType" type="string" required>
+  Tipo de evento para receber. Valores: `TRANSACTION`, `WITHDRAWAL`, `DISPUTE`, `ALL`
+</ParamField>
+
+<ParamField body="description" type="string">
+  Descricao do webhook. Exemplo: `Producao - ERP`
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.thalpay.com/webhooks \
+  -H "x-api-key: sua_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://seusite.com/webhooks/thalpay",
+    "eventType": "ALL",
+    "description": "Producao - Sistema principal"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "status": true,
+  "data": {
+    "id": "d4e5f6a7-b8c9-0123-def0-123456789abc",
+    "url": "https://seusite.com/webhooks/thalpay",
+    "eventType": "ALL",
+    "description": "Producao - Sistema principal",
+    "createdAt": "2026-03-10T00:00:00.000Z"
+  }
+}
+```
+
+</ResponseExample>

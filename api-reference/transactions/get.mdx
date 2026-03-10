@@ -1,0 +1,71 @@
+---
+title: "Consultar Transacao"
+api: "GET /transactions/{id}"
+description: "Retorna os detalhes de uma transacao pelo ID"
+---
+
+## Descricao
+
+Retorna os dados completos de uma transacao. Voce so tem acesso as transacoes do seu proprio seller.
+
+## Request
+
+<ParamField path="id" type="string" required>
+  UUID da transacao.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET https://api.thalpay.com/transactions/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+  -H "x-api-key: sua_api_key"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true,
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "amount": 5000,
+    "netAmount": 4500,
+    "feeAmount": 500,
+    "method": "PIX",
+    "status": "PAID",
+    "description": "Assinatura Mensal",
+    "pixQrCode": "00020126580014br.gov.bcb.pix...",
+    "customer": {
+      "name": "Maria Silva",
+      "email": "maria@email.com",
+      "phone": "11999999999",
+      "documentType": "CPF",
+      "document": "123***78901"
+    },
+    "items": [
+      {
+        "title": "Assinatura Mensal",
+        "amount": 5000,
+        "quantity": 1,
+        "tangible": false
+      }
+    ],
+    "metadata": { "planId": "premium" },
+    "paidAt": "2026-03-10T00:05:00.000Z",
+    "createdAt": "2026-03-10T00:00:00.000Z",
+    "updatedAt": "2026-03-10T00:05:00.000Z"
+  }
+}
+```
+
+```json 404
+{
+  "statusCode": 404,
+  "message": "Transaction not found",
+  "error": "Not Found"
+}
+```
+
+</ResponseExample>

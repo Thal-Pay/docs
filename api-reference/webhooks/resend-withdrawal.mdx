@@ -1,0 +1,40 @@
+---
+title: "Reenviar Webhook (Saque)"
+api: "POST /webhooks/resend-withdrawal-event"
+description: "Reenvia o webhook de um ou mais saques"
+---
+
+## Descricao
+
+Reenvia as notificacoes de webhook para os saques especificados.
+
+## Request
+
+<ParamField body="withdrawalIds" type="string[]" required>
+  Array de UUIDs dos saques. Minimo 1 ID.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.thalpay.com/webhooks/resend-withdrawal-event \
+  -H "x-api-key: sua_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "withdrawalIds": [
+      "c3d4e5f6-a7b8-9012-cdef-123456789012"
+    ]
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true
+}
+```
+
+</ResponseExample>

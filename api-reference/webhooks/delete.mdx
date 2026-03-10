@@ -1,0 +1,32 @@
+---
+title: "Deletar Webhook"
+api: "DELETE /webhooks/{id}"
+description: "Remove um webhook registrado"
+---
+
+## Descricao
+
+Remove permanentemente um webhook. Voce deixara de receber notificacoes nesta URL.
+
+## Request
+
+<ParamField path="id" type="string" required>
+  UUID do webhook a remover.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE https://api.thalpay.com/webhooks/d4e5f6a7-b8c9-0123-def0-123456789abc \
+  -H "x-api-key: sua_api_key"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{}
+```
+
+</ResponseExample>

@@ -1,0 +1,46 @@
+---
+title: "Refresh Token"
+api: "POST /auth/refresh"
+description: "Renova o access token usando o refresh token"
+---
+
+## Descricao
+
+Gera um novo `accessToken` e `refreshToken` a partir do refresh token atual. O token anterior e invalidado (rotacao).
+
+## Request
+
+<ParamField body="refreshToken" type="string" required>
+  UUID v4 do refresh token obtido no login ou no ultimo refresh.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.thalpay.com/auth/refresh \
+  -H "Content-Type: application/json" \
+  -d '{
+    "refreshToken": "550e8400-e29b-41d4-a716-446655440000"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...(novo)",
+  "refreshToken": "660e8400-e29b-41d4-a716-446655440001"
+}
+```
+
+```json 401
+{
+  "statusCode": 401,
+  "message": "Invalid or expired refresh token",
+  "error": "Unauthorized"
+}
+```
+
+</ResponseExample>

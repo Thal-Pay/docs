@@ -1,0 +1,115 @@
+---
+title: "Criar Saque"
+api: "POST /withdrawals"
+description: "Solicita um saque do saldo disponivel via PIX"
+---
+
+## Descricao
+
+Cria uma solicitacao de saque do saldo disponivel na wallet. O saque e processado via PIX para a chave informada.
+
+<Warning>
+  Requer header `Idempotency-Key` com UUID v4 unico.
+</Warning>
+
+## Request
+
+### Headers
+
+<ParamField header="Idempotency-Key" type="string" required>
+  UUID v4 unico para garantir idempotencia.
+</ParamField>
+
+### Body
+
+<ParamField body="amount" type="integer" required>
+  Valor do saque em **centavos**. Minimo: 1 centavo. Deve ser menor ou igual ao saldo disponivel.
+</ParamField>
+
+<ParamField body="method" type="string" required>
+  Metodo de saque. Valores: `PIX`, `CRYPTO`
+</ParamField>
+
+<ParamField body="pixKey" type="string">
+  Chave PIX de destino. **Obrigatorio** quando `method` = `PIX`.
+</ParamField>
+
+<ParamField body="pixKeyType" type="string">
+  Tipo da chave PIX. **Obrigatorio** quando `method` = `PIX`.
+  Valores: `CPF`, `CNPJ`, `PHONE`, `EMAIL`, `EVP`
+</ParamField>
+
+<ParamField body="withdrawFrom" type="string" default="PIX">
+  Origem do saldo. Valores: `PIX`, `CARD`, `BOLETO`
+</ParamField>
+
+<ParamField body="beneficiaryName" type="string">
+  Nome completo do beneficiario.
+</ParamField>
+
+<ParamField body="beneficiaryDocumentType" type="string">
+  Tipo do documento do beneficiario. Valores: `CPF`, `CNPJ`
+</ParamField>
+
+<ParamField body="beneficiaryDocumentNumber" type="string">
+  Numero do documento do beneficiario (apenas digitos).
+</ParamField>
+
+<ParamField body="description" type="string">
+  Descricao do saque (max 140 caracteres).
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  JSON com dados customizados.
+</ParamField>
+
+<ParamField body="cryptoWalletAddress" type="string">
+  Endereco da carteira crypto. **Obrigatorio** quando `method` = `CRYPTO`.
+</ParamField>
+
+<RequestExample>
+
+```bash PIX
+curl -X POST https://api.thalpay.com/withdrawals \
+  -H "x-api-key: sua_api_key" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: 770e8400-e29b-41d4-a716-446655440002" \
+  -d '{
+    "amount": 50000,
+    "method": "PIX",
+    "pixKey": "12345678901",
+    "pixKeyType": "CPF",
+    "withdrawFrom": "PIX",
+    "description": "Saque semanal"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "status": true,
+  "data": {
+    "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+    "amount": 50000,
+    "method": "PIX",
+    "status": "PENDING",
+    "pixKey": "123***78901",
+    "pixKeyType": "CPF",
+    "description": "Saque semanal",
+    "createdAt": "2026-03-10T12:00:00.000Z"
+  }
+}
+```
+
+```json 422
+{
+  "statusCode": 422,
+  "message": "Insufficient balance",
+  "error": "Unprocessable Entity"
+}
+```
+
+</ResponseExample>

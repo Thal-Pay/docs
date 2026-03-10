@@ -1,0 +1,53 @@
+---
+title: "Criar API Key"
+api: "POST /apiKeys"
+description: "Gera uma nova API Key para autenticacao"
+---
+
+## Descricao
+
+Cria uma nova API Key vinculada ao seu seller. O secret da key e retornado **apenas nesta resposta** — armazene-o de forma segura.
+
+<Warning>
+  Este endpoint requer autenticacao via JWT (Bearer token). API Keys nao podem criar outras API Keys.
+</Warning>
+
+## Request
+
+<ParamField body="name" type="string" required>
+  Nome descritivo para a key. Exemplo: `Producao - Loja Principal`
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.thalpay.com/apiKeys \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Producao - Loja Principal"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "status": true,
+  "data": {
+    "id": "e5f6a7b8-c9d0-1234-ef01-23456789abcd",
+    "name": "Producao - Loja Principal",
+    "key": "thalpay_live_abc123def456ghi789jkl012mno345",
+    "sellerId": "f6a7b8c9-d0e1-2345-f012-3456789abcde",
+    "createdAt": "2026-03-10T00:00:00.000Z"
+  }
+}
+```
+
+</ResponseExample>
+
+<Note>
+  O campo `key` so aparece nesta resposta. Nas consultas subsequentes, o secret nao e retornado.
+</Note>

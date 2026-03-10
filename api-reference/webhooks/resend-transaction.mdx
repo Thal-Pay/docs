@@ -1,0 +1,41 @@
+---
+title: "Reenviar Webhook (Transacao)"
+api: "POST /webhooks/resend-transaction-event"
+description: "Reenvia o webhook de uma ou mais transacoes"
+---
+
+## Descricao
+
+Reenvia as notificacoes de webhook para as transacoes especificadas. Util quando seu sistema estava fora do ar e perdeu notificacoes.
+
+## Request
+
+<ParamField body="transactionIds" type="string[]" required>
+  Array de UUIDs das transacoes. Minimo 1 ID.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.thalpay.com/webhooks/resend-transaction-event \
+  -H "x-api-key: sua_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "transactionIds": [
+      "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+    ]
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true
+}
+```
+
+</ResponseExample>

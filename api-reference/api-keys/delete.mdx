@@ -1,0 +1,36 @@
+---
+title: "Deletar API Key"
+api: "DELETE /apiKeys/{id}"
+description: "Remove permanentemente uma API Key"
+---
+
+## Descricao
+
+Deleta uma API Key. Todas as requisicoes usando esta key passarao a retornar `401 Unauthorized`.
+
+<Warning>
+  Esta acao e irreversivel. Certifique-se de que nenhuma integracao ativa usa esta key antes de deletar.
+</Warning>
+
+## Request
+
+<ParamField path="id" type="string" required>
+  UUID da API Key a remover.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE https://api.thalpay.com/apiKeys/e5f6a7b8-c9d0-1234-ef01-23456789abcd \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{}
+```
+
+</ResponseExample>

@@ -1,80 +1,153 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Integre o Thalpay ao seu sistema em minutos"
 ---
 
-## Get started in three steps
+## 1. Obtenha suas credenciais
 
-Get your documentation site running locally and make your first customization.
+Acesse o [Dashboard Thalpay](https://dashboard.thalpay.com) e crie sua conta. Apos aprovacao do cadastro, voce tera acesso ao painel para gerar suas API Keys.
 
-### Step 1: Set up your local environment
+## 2. Autentique-se
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+Existem duas formas de autenticacao:
 
-### Step 2: Deploy your changes
+<Tabs>
+  <Tab title="API Key (recomendado)">
+    Envie sua API Key no header de cada requisicao:
+    ```bash
+    curl -X GET https://api.thalpay.com/transactions \
+      -H "x-api-key: sua_api_key_aqui"
+    ```
+  </Tab>
+  <Tab title="JWT Token">
+    Faca login para obter um token Bearer:
+    ```bash
+    curl -X POST https://api.thalpay.com/login \
+      -H "Content-Type: application/json" \
+      -d '{
+        "email": "seu@email.com",
+        "password": "sua_senha"
+      }'
+    ```
+    Use o `accessToken` retornado:
+    ```bash
+    curl -X GET https://api.thalpay.com/transactions \
+      -H "Authorization: Bearer eyJhbGciOi..."
+    ```
+  </Tab>
+</Tabs>
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+## 3. Crie sua primeira transacao PIX
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+```bash
+curl -X POST https://api.thalpay.com/transactions \
+  -H "x-api-key: sua_api_key_aqui" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000" \
+  -d '{
+    "amount": 1500,
+    "method": "PIX",
+    "customer": {
+      "name": "Maria Silva",
+      "email": "maria@email.com",
+      "phone": "11999999999",
+      "documentType": "CPF",
+      "document": "12345678901"
+    },
+    "items": [
+      {
+        "title": "Produto Exemplo",
+        "amount": 1500,
+        "quantity": 1,
+        "tangible": true
+      }
+    ]
+  }'
+```
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+**Resposta:**
 
-### Step 3: Go live
+```json
+{
+  "status": true,
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "amount": 1500,
+    "method": "PIX",
+    "status": "PENDING",
+    "pixQrCode": "00020126580014br.gov.bcb.pix...",
+    "pixQrCodeBase64": "data:image/png;base64,...",
+    "expiresAt": "2026-03-10T01:00:00.000Z",
+    "createdAt": "2026-03-10T00:00:00.000Z"
+  }
+}
+```
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+## 4. Receba notificacoes via Webhook
 
-## Next steps
+Registre uma URL para receber notificacoes quando o pagamento for confirmado:
 
-Now that you have your docs running, explore these key features:
+```bash
+curl -X POST https://api.thalpay.com/webhooks \
+  -H "x-api-key: sua_api_key_aqui" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://seusite.com/webhooks/thalpay",
+    "eventType": "TRANSACTION"
+  }'
+```
 
-<CardGroup cols={2}>
+Quando o comprador pagar, seu endpoint recebera:
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+```json
+{
+  "event": "TRANSACTION_UPDATED",
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "status": "PAID",
+    "amount": 1500,
+    "method": "PIX",
+    "paidAt": "2026-03-10T00:05:00.000Z"
+  }
+}
+```
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+## 5. Consulte seu saldo
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+```bash
+curl -X GET https://api.thalpay.com/seller-wallet/gestao \
+  -H "x-api-key: sua_api_key_aqui"
+```
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
+```json
+{
+  "status": true,
+  "data": {
+    "availableBalance": 1350,
+    "blockedBalance": 0,
+    "totalBalance": 1350,
+    "currency": "BRL"
+  }
+}
+```
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  O saldo disponivel ja desconta as taxas do gateway. Todos os valores sao em **centavos**.
 </Note>
+
+## Proximos passos
+
+<CardGroup cols={2}>
+  <Card title="Autenticacao" icon="lock" href="/guides/authentication">
+    JWT vs API Key, refresh tokens e boas praticas.
+  </Card>
+  <Card title="Idempotencia" icon="shield" href="/guides/idempotency">
+    Como evitar cobracas duplicadas em caso de retry.
+  </Card>
+  <Card title="Webhooks" icon="bell" href="/guides/webhooks">
+    Configure e valide webhooks para seu sistema.
+  </Card>
+  <Card title="Erros" icon="triangle-exclamation" href="/guides/errors">
+    Codigos de erro e como trata-los.
+  </Card>
+</CardGroup>

@@ -1,0 +1,37 @@
+---
+title: "Consultar Webhook"
+api: "GET /webhooks/{id}"
+description: "Retorna os detalhes de um webhook"
+---
+
+## Request
+
+<ParamField path="id" type="string" required>
+  UUID do webhook.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET https://api.thalpay.com/webhooks/d4e5f6a7-b8c9-0123-def0-123456789abc \
+  -H "x-api-key: sua_api_key"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true,
+  "data": {
+    "id": "d4e5f6a7-b8c9-0123-def0-123456789abc",
+    "url": "https://seusite.com/webhooks/thalpay",
+    "eventType": "ALL",
+    "description": "Producao - Sistema principal",
+    "createdAt": "2026-03-10T00:00:00.000Z"
+  }
+}
+```
+
+</ResponseExample>

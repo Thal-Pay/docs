@@ -1,0 +1,89 @@
+---
+title: "Listar Saques"
+api: "GET /withdrawals"
+description: "Lista os saques do seller com paginacao e filtros"
+---
+
+## Descricao
+
+Retorna uma lista paginada dos seus saques. Suporta filtros por status, metodo, periodo, valor e metadata.
+
+## Request
+
+<ParamField query="take" type="integer" default="10">
+  Numero de registros por pagina.
+</ParamField>
+
+<ParamField query="skip" type="integer" default="0">
+  Offset de paginacao.
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filtrar por status. Valores: `PENDING`, `APPROVED`, `REJECTED`, `PROCESSING`, `PAID`, `FAILED`
+</ParamField>
+
+<ParamField query="method" type="string">
+  Filtrar por metodo. Valores: `PIX`, `TED`, `DOC`
+</ParamField>
+
+<ParamField query="withdrawalId" type="string">
+  Buscar por ID exato do saque.
+</ParamField>
+
+<ParamField query="startDate" type="string">
+  Data inicial (ISO 8601). Exemplo: `2026-03-01`
+</ParamField>
+
+<ParamField query="endDate" type="string">
+  Data final (ISO 8601). Exemplo: `2026-03-10`
+</ParamField>
+
+<ParamField query="minAmount" type="integer">
+  Valor minimo em centavos.
+</ParamField>
+
+<ParamField query="maxAmount" type="integer">
+  Valor maximo em centavos.
+</ParamField>
+
+<ParamField query="metadataKey" type="string">
+  Chave de metadata para filtrar.
+</ParamField>
+
+<ParamField query="metadataValue" type="string">
+  Valor de metadata para filtrar.
+</ParamField>
+
+<ParamField query="export" type="boolean" default="false">
+  Se `true`, retorna CSV.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://api.thalpay.com/withdrawals?take=20&status=PAID&startDate=2026-03-01&endDate=2026-03-10" \
+  -H "x-api-key: sua_api_key"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true,
+  "data": [
+    {
+      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "amount": 50000,
+      "method": "PIX",
+      "status": "PAID",
+      "paidAt": "2026-03-10T12:01:00.000Z",
+      "createdAt": "2026-03-10T12:00:00.000Z"
+    }
+  ],
+  "count": 25
+}
+```
+
+</ResponseExample>

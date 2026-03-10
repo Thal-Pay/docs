@@ -1,0 +1,32 @@
+---
+title: "Logout"
+api: "POST /auth/logout"
+description: "Revoga todos os tokens do usuario"
+---
+
+## Descricao
+
+Invalida todos os refresh tokens do usuario autenticado. O access token atual continua valido ate expirar (1h), mas nao podera ser renovado.
+
+## Request
+
+Nao requer body. Autenticacao via Bearer token ou API Key.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.thalpay.com/auth/logout \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": true
+}
+```
+
+</ResponseExample>
