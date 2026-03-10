@@ -5,7 +5,7 @@ description: "Integre o Thalpay ao seu sistema em minutos"
 
 ## 1. Obtenha suas credenciais
 
-Acesse o [Dashboard Thalpay](https://dashboard.thalpay.com) e crie sua conta. Apos aprovacao do cadastro, voce tera acesso ao painel para gerar suas API Keys.
+Acesse o [Dashboard Thalpay](https://dashboard.thalbank.com) e crie sua conta. Apos aprovacao do cadastro, voce tera acesso ao painel para gerar suas API Keys.
 
 ## 2. Autentique-se
 
@@ -15,14 +15,14 @@ Existem duas formas de autenticacao:
   <Tab title="API Key (recomendado)">
     Envie sua API Key no header de cada requisicao:
     ```bash
-    curl -X GET https://api.thalpay.com/transactions \
+    curl -X GET https://api.thalbank.com/transactions \
       -H "x-api-key: sua_api_key_aqui"
     ```
   </Tab>
   <Tab title="JWT Token">
     Faca login para obter um token Bearer:
     ```bash
-    curl -X POST https://api.thalpay.com/login \
+    curl -X POST https://api.thalbank.com/login \
       -H "Content-Type: application/json" \
       -d '{
         "email": "seu@email.com",
@@ -31,7 +31,7 @@ Existem duas formas de autenticacao:
     ```
     Use o `accessToken` retornado:
     ```bash
-    curl -X GET https://api.thalpay.com/transactions \
+    curl -X GET https://api.thalbank.com/transactions \
       -H "Authorization: Bearer eyJhbGciOi..."
     ```
   </Tab>
@@ -40,7 +40,7 @@ Existem duas formas de autenticacao:
 ## 3. Crie sua primeira transacao PIX
 
 ```bash
-curl -X POST https://api.thalpay.com/transactions \
+curl -X POST https://api.thalbank.com/transactions \
   -H "x-api-key: sua_api_key_aqui" \
   -H "Content-Type: application/json" \
   -H "Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000" \
@@ -88,7 +88,7 @@ curl -X POST https://api.thalpay.com/transactions \
 Registre uma URL para receber notificacoes quando o pagamento for confirmado:
 
 ```bash
-curl -X POST https://api.thalpay.com/webhooks \
+curl -X POST https://api.thalbank.com/webhooks \
   -H "x-api-key: sua_api_key_aqui" \
   -H "Content-Type: application/json" \
   -d '{
@@ -115,7 +115,7 @@ Quando o comprador pagar, seu endpoint recebera:
 ## 5. Consulte seu saldo
 
 ```bash
-curl -X GET https://api.thalpay.com/seller-wallet/gestao \
+curl -X GET https://api.thalbank.com/seller-wallet/gestao \
   -H "x-api-key: sua_api_key_aqui"
 ```
 

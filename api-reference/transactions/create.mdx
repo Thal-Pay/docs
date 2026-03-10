@@ -131,7 +131,7 @@ Cria uma transacao de pagamento. Para PIX, retorna QR Code. Para Boleto, retorna
 <RequestExample>
 
 ```bash PIX
-curl -X POST https://api.thalpay.com/transactions \
+curl -X POST https://api.thalbank.com/transactions \
   -H "x-api-key: sua_api_key" \
   -H "Content-Type: application/json" \
   -H "Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000" \
@@ -158,7 +158,7 @@ curl -X POST https://api.thalpay.com/transactions \
 ```
 
 ```bash Cartao de Credito
-curl -X POST https://api.thalpay.com/transactions \
+curl -X POST https://api.thalbank.com/transactions \
   -H "x-api-key: sua_api_key" \
   -H "Content-Type: application/json" \
   -H "Idempotency-Key: 660e8400-e29b-41d4-a716-446655440001" \

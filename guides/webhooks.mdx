@@ -22,7 +22,7 @@ sequenceDiagram
 ## Registrar um webhook
 
 ```bash
-curl -X POST https://api.thalpay.com/webhooks \
+curl -X POST https://api.thalbank.com/webhooks \
   -H "x-api-key: sua_api_key" \
   -H "Content-Type: application/json" \
   -d '{
@@ -115,7 +115,7 @@ Se um webhook falhou ou voce precisa reprocessar:
 
 ```bash
 # Reenviar webhook de transacao
-curl -X POST https://api.thalpay.com/webhooks/resend-transaction-event \
+curl -X POST https://api.thalbank.com/webhooks/resend-transaction-event \
   -H "x-api-key: sua_api_key" \
   -H "Content-Type: application/json" \
   -d '{
@@ -125,7 +125,7 @@ curl -X POST https://api.thalpay.com/webhooks/resend-transaction-event \
 
 ```bash
 # Reenviar webhook de saque
-curl -X POST https://api.thalpay.com/webhooks/resend-withdrawal-event \
+curl -X POST https://api.thalbank.com/webhooks/resend-withdrawal-event \
   -H "x-api-key: sua_api_key" \
   -H "Content-Type: application/json" \
   -d '{

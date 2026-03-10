@@ -9,7 +9,7 @@
   },
   "favicon": "/favicon.svg",
   "api": {
-    "baseUrl": "https://api.thalpay.com",
+    "baseUrl": "https://api.thalbank.com",
     "auth": {
       "method": "bearer",
       "name": "Authorization"
@@ -105,7 +105,7 @@
       "anchors": [
         {
           "anchor": "API Status",
-          "href": "https://status.thalpay.com",
+          "href": "https://status.thalbank.com",
           "icon": "signal"
         }
       ]
@@ -119,13 +119,13 @@
     "links": [
       {
         "label": "Suporte",
-        "href": "mailto:suporte@thalpay.com"
+        "href": "mailto:suporte@thalbank.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.thalpay.com"
+      "href": "https://dashboard.thalbank.com"
     }
   },
   "contextual": {

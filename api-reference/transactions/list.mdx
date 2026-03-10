@@ -50,17 +50,17 @@ Retorna uma lista paginada das suas transacoes. Suporta filtros por status, meto
 <RequestExample>
 
 ```bash Paginacao basica
-curl -X GET "https://api.thalpay.com/transactions?take=20&skip=0&status=PAID&method=PIX" \
+curl -X GET "https://api.thalbank.com/transactions?take=20&skip=0&status=PAID&method=PIX" \
   -H "x-api-key: sua_api_key"
 ```
 
 ```bash Filtro por metadata
-curl -X GET "https://api.thalpay.com/transactions?metadataKey=orderId&metadataValue=ORD-001" \
+curl -X GET "https://api.thalbank.com/transactions?metadataKey=orderId&metadataValue=ORD-001" \
   -H "x-api-key: sua_api_key"
 ```
 
 ```bash Exportar CSV
-curl -X GET "https://api.thalpay.com/transactions?export=true&status=PAID" \
+curl -X GET "https://api.thalbank.com/transactions?export=true&status=PAID" \
   -H "x-api-key: sua_api_key" \
   -o transacoes.csv
 ```

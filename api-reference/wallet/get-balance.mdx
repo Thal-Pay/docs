@@ -17,12 +17,12 @@ Retorna o saldo atual da wallet do seller. Todos os valores sao em **centavos**.
 <RequestExample>
 
 ```bash cURL
-curl -X GET https://api.thalpay.com/seller-wallet/gestao \
+curl -X GET https://api.thalbank.com/seller-wallet/gestao \
   -H "x-api-key: sua_api_key"
 ```
 
 ```javascript Node.js
-const response = await fetch("https://api.thalpay.com/seller-wallet/gestao", {
+const response = await fetch("https://api.thalbank.com/seller-wallet/gestao", {
   headers: { "x-api-key": process.env.THALPAY_API_KEY },
 });
 const { data } = await response.json();
