@@ -13,6 +13,9 @@
     "auth": {
       "method": "bearer",
       "name": "Authorization"
+    },
+    "playground": {
+      "display": "interactive"
     }
   },
   "navigation": {
@@ -116,12 +119,7 @@
     "dark": "/logo/light.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Suporte",
-        "href": "mailto:suporte@thalbank.com"
-      }
-    ],
+    "links": [],
     "primary": {
       "type": "button",
       "label": "Dashboard",
