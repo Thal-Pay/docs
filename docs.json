@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Thal Pay",
   "colors": {
-    "primary": "#ff0000",
-    "light": "#c90606",
-    "dark": "#2200ff"
+    "primary": "#212732",
+    "light": "#ffffff",
+    "dark": "#05070A"
   },
   "favicon": {
     "light": "/images/FaviconLight.svg",
@@ -117,10 +117,6 @@
       ]
     }
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/light.svg"
-  },
   "navbar": {
     "links": [],
     "primary": {
@@ -149,8 +145,12 @@
   },
   "background": {
     "color": {
-      "dark": "#d70000"
+      "dark": "#05070A"
     },
     "decoration": "gradient"
+  },
+  "logo": {
+    "light": "/images/light1.svg",
+    "dark": "/images/dark1.svg"
   }
 }
