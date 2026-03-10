@@ -113,7 +113,7 @@
   },
   "logo": {
     "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "dark": "/logo/light.svg"
   },
   "navbar": {
     "links": [
@@ -139,7 +139,11 @@
   "footer": {
     "socials": {
       "github": "https://github.com/Thal-Pay",
-      "linkedin": "https://linkedin.com/company/thalpay"
+      "linkedin": "https://www.linkedin.com/company/thal-payhttps://linkedin.com/company/thalpay"
     }
+  },
+  "description": "Documentação de API - Gateway de Pagamento Thal Pay",
+  "fonts": {
+    "family": "Montserrat"
   }
 }
